@@ -7,6 +7,7 @@ const refs = {
   getTasks: () => collection(firestoreDB, Constants.NODES.TASKS),
   updateTask: (id) => doc(firestoreDB, Constants.NODES.TASKS, id),
   deleteTask: (id) => doc(firestoreDB, Constants.NODES.TASKS,id),
+  titleListener: () => doc(firestoreDB, Constants.NODES.TITLE_LISTENER,'title'),
 };
 
 export { refs };

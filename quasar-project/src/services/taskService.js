@@ -1,5 +1,3 @@
-import { firestoreDB } from 'src/config/firebase';
-import * as Constants from 'src/constants';
 import { deleteDoc, updateDoc, setDoc, getDocs } from 'firebase/firestore';
 import { refs } from 'src/config/firebase/firestoreDatabase';
 
@@ -17,7 +15,7 @@ export async function createTaskAPI(task) {
 
 export async function readTasksAPI() {
   const tasksSnap = await getDocs(refs.getTasks());
-  const tasks = tasksSnap.docs.map((doc) => doc.data());  
+  const tasks = tasksSnap.docs.map((doc) => doc.data());
   if (tasks.length > 0) {
     return { status: 200, data: tasks };
   } else {
@@ -41,3 +39,5 @@ export async function updateTaskAPI(task) {
 export async function deleteTaskAPI(task) {
   await deleteDoc(refs.deleteTask(task.id));
 }
+
+

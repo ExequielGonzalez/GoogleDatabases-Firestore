@@ -2,24 +2,10 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          CRUD Firestore
-        </q-toolbar-title>
-
-        
+        <q-toolbar-title> {{ getTitlePage }} </q-toolbar-title>
+        <q-btn color="secondary" label="unsuscribe" @click="unsuscribe()" />
       </q-toolbar>
     </q-header>
-
-    
 
     <q-page-container>
       <router-view />
@@ -27,72 +13,24 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+<script setup>
+import { ref, onBeforeMount, computed } from 'vue';
+import { useTitleStore } from 'src/stores/title';
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
+const name = 'MainLayout';
+let titleStore;
 
-export default defineComponent({
-  name: 'MainLayout',
+// const titlePage = ref('');
 
-  components: {
-    EssentialLink
-  },
+onBeforeMount(() => {
+  titleStore = useTitleStore();
+});
 
-  setup () {
-    const leftDrawerOpen = ref(false)
+const getTitlePage = computed(() => {  
+  return titleStore.getTitle;
+});
 
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+const unsuscribe = () => {
+  titleStore.unsuscribe();
+}
 </script>
