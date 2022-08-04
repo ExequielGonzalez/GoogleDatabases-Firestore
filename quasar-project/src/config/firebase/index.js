@@ -2,8 +2,7 @@ import { initializeApp } from 'firebase/app';
 // import { getAuth } from 'firebase/auth';
 // import 'firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
-import { getFunctions } from 'firebase/functions';
-import { getDatabase } from 'firebase/database';
+
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBiVXfdVFwv4NJ6aY0rCYs8m47-Nf8B_sE',
@@ -18,11 +17,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-const realtimeDB = getDatabase(firebaseApp);
-// const firestoreDB = getFirestore(firebaseApp);
+
+const firestoreDB = getFirestore(firebaseApp);
 // const auth = getAuth(firebaseApp);
 // const functions = getFunctions(firebaseApp);
 
 // firebase.auth().languageCode = 'es'
 
-export { firebaseApp, realtimeDB };
+export { firebaseApp, firestoreDB };

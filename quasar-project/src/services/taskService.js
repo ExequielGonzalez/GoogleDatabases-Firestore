@@ -1,12 +1,13 @@
-import { realtimeDB } from 'src/config/firebase';
+import { firestoreDB } from 'src/config/firebase';
 import * as Constants from 'src/constants';
-import { update, push, onValue, remove } from 'firebase/database';
-import { refs } from 'src/config/firebase/realtimeDatabase';
+import { deleteDoc, updateDoc, setDoc, getDocs } from 'firebase/firestore';
+import { refs } from 'src/config/firebase/firestoreDatabase';
 
 export async function createTaskAPI(task) {
   try {
-    const key = push(refs.createTask(), task).key;
-    await update(refs.updateTask(key), { id: key });
+    const ref = refs.createTask();
+    task.id = ref.id;
+    await setDoc(ref, task);
     return { status: 200 };
   } catch (error) {
     console.log(error);
@@ -15,38 +16,28 @@ export async function createTaskAPI(task) {
 }
 
 export async function readTasksAPI() {
-  try {
-    return await new Promise((resolve, reject) => {
-      onValue(
-        refs.getTasks(),
-        (tasksSnap) => {
-          resolve({
-            status: 200,
-            data: tasksSnap.val(),
-          });
-        },
-        { onlyOnce: true }
-      );
-    });
-  } catch (e) {
-    return {
-      status: 400,
-      data: e,
-    };
+  const tasksSnap = await getDocs(refs.getTasks());
+  const tasks = tasksSnap.docs.map((doc) => doc.data());  
+  if (tasks.length > 0) {
+    return { status: 200, data: tasks };
+  } else {
+    return { status: 400, error: 'No tasks found' };
   }
 }
 
 export async function updateTaskAPI(task) {
-  await update(refs.updateTask(task.id), {
-    id: task.id,
-    title: task.title,
-    description: task.description,
-    state: task.state,
-  });
-
-
+  try {
+    await updateDoc(refs.updateTask(task.id), {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      state: task.state,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-  export async function deleteTaskAPI(task) {
-    await remove(refs.deleteTask(task.id))
-  }
+export async function deleteTaskAPI(task) {
+  await deleteDoc(refs.deleteTask(task.id));
+}

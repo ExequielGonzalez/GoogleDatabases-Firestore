@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          CRUD RealTime
+          CRUD Firestore
         </q-toolbar-title>
 
         

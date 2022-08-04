@@ -13,7 +13,7 @@
 
     <q-item-section top side>
       <div class="text-grey-8 q-gutter-xs">
-        <q-btn size="12px" flat dense round icon="delete" color="red" @click="deleteTask(this.id)" />
+        <q-btn size="12px" flat dense round icon="delete" color="red" @click="deleteTask(this)" />
       </div>
     </q-item-section>
   </q-item>
